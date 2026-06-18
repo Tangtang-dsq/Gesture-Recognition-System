@@ -423,15 +423,19 @@ th {
 }
 
 @media (max-width: 900px) {
-  .appHeader,
   .workspace,
   .formGrid {
     grid-template-columns: 1fr;
   }
 
   .appHeader {
+    flex-direction: column;
     align-items: flex-start;
     padding: 14px;
+  }
+
+  .brand h1 {
+    font-size: 18px;
   }
 
   nav {
