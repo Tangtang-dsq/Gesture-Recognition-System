@@ -66,6 +66,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Extract MediaPipe 63D features from HaGRID images.")
     parser.add_argument("--dataset-root", type=Path, default=settings.dataset_root)
     parser.add_argument("--max-per-class", type=int, default=800)
+    parser.add_argument("--classes", nargs="*", default=None, help="Optional source class names to process.")
     parser.add_argument(
         "--model",
         type=Path,
@@ -104,7 +105,12 @@ def main() -> None:
             writer = csv.writer(f)
             writer.writerow(header)
 
-            for source_label, target_label in LABEL_MAP.items():
+            selected_items = LABEL_MAP.items()
+            if args.classes:
+                selected = set(args.classes)
+                selected_items = [(source, target) for source, target in LABEL_MAP.items() if source in selected]
+
+            for source_label, target_label in selected_items:
                 annotation_path = annotation_root / f"{source_label}.json"
                 class_dir = image_root / f"train_val_{source_label}"
                 if not annotation_path.exists() or not class_dir.exists():

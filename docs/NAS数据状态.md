@@ -10,8 +10,21 @@
 
 ## 下一步
 
-1. 解压 `raw/hagrid/hagrid-sample-500k-384p.zip`。
-2. 对图片运行 MediaPipe Hands，提取 21 个关键点。
-3. 按系统一致规则归一化为 63 维特征。
-4. 输出到 `features/static/gesture_data.csv`。
-5. 运行 `backend/scripts/train_static.py` 训练静态手势模型。
+## 已生成的训练特征
+
+| 特征文件 | 数据来源 | 状态 |
+| --- | --- | --- |
+| `features/static/gesture_data.csv` | HaGRID 已解压类别抽样：`fist`、`like`、`ok`、`one`、`four` | 已生成 1200 条有效样本 |
+
+## 已训练模型
+
+| 模型 | 类别 | 测试准确率 | 状态 |
+| --- | --- | --- | --- |
+| `backend/app/models/static_classifier.joblib` | `fist`、`thumbs_up`、`ok`、`number_1`、`number_4` | 0.9167 | 第一版可用模型 |
+
+## 下一步
+
+1. 等待 `raw/hagrid/hagrid-sample-500k-384p.zip` 完整解压完成。
+2. 扩大静态特征提取类别和每类样本数。
+3. 重新运行 `backend/scripts/train_static.py` 训练更完整的静态手势模型。
+4. 继续下载/整理动态手势数据集，用于训练动态模型。
