@@ -86,6 +86,13 @@ DATASET_ROOT=Z:/zhangxu/shoushi_data
 
 ```text
 Z:/gesture-data/
+├── raw/
+│   ├── hagrid/
+│   ├── jester/
+│   ├── egogesture/
+│   ├── shrec/
+│   ├── nvgesture/
+│   └── custom/
 └── features/
     ├── static/
     │   └── gesture_data.csv
@@ -95,6 +102,28 @@ Z:/gesture-data/
         │   └── seq_0002.npy
         ├── swipe_right/
         └── none/
+```
+
+当前已经在 NAS `Z:/zhangxu/shoushi_data` 下创建好：
+
+```text
+raw/hagrid
+raw/jester
+raw/egogesture
+raw/shrec
+raw/nvgesture
+raw/custom
+features/static
+features/dynamic/none
+features/dynamic/swipe_left
+features/dynamic/swipe_right
+features/dynamic/swipe_up
+features/dynamic/swipe_down
+features/dynamic/zoom_in
+features/dynamic/zoom_out
+models
+reports
+tmp
 ```
 
 静态 CSV 格式：

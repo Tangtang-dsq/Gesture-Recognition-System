@@ -1,6 +1,8 @@
 import argparse
 from dataclasses import dataclass
 
+from app.core.config import settings
+
 
 @dataclass(frozen=True)
 class DatasetInfo:
@@ -64,6 +66,7 @@ def print_dataset(info: DatasetInfo) -> None:
     if info.command:
         print(f"下载命令: {info.command}")
     print(f"说明: {info.note}")
+    print(f"建议保存到: {settings.dataset_root / 'raw' / info.name.lower().replace(' ', '_').replace('/', '_')}")
 
 
 def main() -> None:
