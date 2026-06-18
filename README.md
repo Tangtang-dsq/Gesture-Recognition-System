@@ -45,3 +45,19 @@ python scripts/train_dynamic.py
 ```
 
 训练产物会保存到 `backend/app/models/`，后端启动时自动加载；没有模型文件时会使用规则分类器兜底，便于先联调端到端链路。
+
+## 公开数据集
+
+公开大数据集下载和训练建议见 `docs/公开数据集训练方案.md`。可先查看入口：
+
+```powershell
+python backend/scripts/download_public_datasets.py --dataset all --dry-run
+```
+
+## NAS 数据目录
+
+群晖 NAS 挂载和训练目录配置见 `docs/NAS数据挂载与训练.md`。核心配置是 `.env` 中的 `DATASET_ROOT`，例如：
+
+```env
+DATASET_ROOT=Z:/gesture-data
+```

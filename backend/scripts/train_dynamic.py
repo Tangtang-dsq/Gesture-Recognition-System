@@ -6,6 +6,8 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 
+from app.core.config import settings
+from app.core.dataset_files import load_dynamic_feature_dirs
 from app.core.db import Sample, SessionLocal
 
 
@@ -17,13 +19,19 @@ def main() -> None:
     db = SessionLocal()
     rows = db.query(Sample).filter(Sample.mode == "dynamic").all()
     db.close()
-    if not rows:
-        raise SystemExit("No dynamic samples found. Collect data before training.")
-
-    labels = sorted({row.label for row in rows})
-    label_to_idx = {label: idx for idx, label in enumerate(labels)}
-    x = np.asarray([np.asarray(row.feature, dtype=np.float32).reshape(-1) for row in rows])
-    y = np.asarray([label_to_idx[row.label] for row in rows], dtype=np.int64)
+    if rows:
+        labels = sorted({row.label for row in rows})
+        label_to_idx = {label: idx for idx, label in enumerate(labels)}
+        x = np.asarray([np.asarray(row.feature, dtype=np.float32).reshape(-1) for row in rows])
+        y = np.asarray([label_to_idx[row.label] for row in rows], dtype=np.int64)
+    else:
+        loaded = load_dynamic_feature_dirs(settings.dataset_root)
+        if loaded is None:
+            raise SystemExit(
+                "No dynamic samples found. Collect data or set DATASET_ROOT to a folder containing "
+                "features/dynamic/<label>/*.npy."
+            )
+        x, y, labels = loaded
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, stratify=y, random_state=42)
     model = MLPClassifier(hidden_layer_sizes=(256, 128), max_iter=500, random_state=42)

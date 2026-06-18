@@ -14,6 +14,7 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql+psycopg://gesture:gesture@localhost:5432/gesture"
     redis_url: str = "redis://localhost:6379/0"
+    dataset_root: Path = DATA_DIR
     allowed_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
     conf_threshold: float = 0.65
     vote_n: int = 5
