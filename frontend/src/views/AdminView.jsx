@@ -2,6 +2,7 @@ import { Activity, Brain, RefreshCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { MetricCard } from "../components/MetricCard.jsx";
 import { getJson, postJson } from "../lib/api.js";
+import { modeName } from "../lib/gestureLabels.js";
 
 export function AdminView() {
   const [metrics, setMetrics] = useState(null);
@@ -63,7 +64,7 @@ export function AdminView() {
           {models.map((model) => (
             <tr key={model.id}>
               <td>{model.name}</td>
-              <td>{model.mode}</td>
+              <td>{modeName(model.mode)}</td>
               <td>{model.accuracy ?? "-"}</td>
               <td>{model.active ? "active" : "inactive"}</td>
             </tr>

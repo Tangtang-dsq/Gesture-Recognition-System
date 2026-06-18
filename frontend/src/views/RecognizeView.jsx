@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { MetricCard } from "../components/MetricCard.jsx";
 import { StatusPill } from "../components/StatusPill.jsx";
 import { createDemoFeature, normalizeLandmarks } from "../lib/features.js";
+import { gestureName, modeName } from "../lib/gestureLabels.js";
 import { createHandLandmarker } from "../lib/handLandmarker.js";
 import { createGestureSocket } from "../lib/socket.js";
 import { drawSkeleton } from "../lib/draw.js";
@@ -135,7 +136,7 @@ export function RecognizeView() {
           <Hand size={26} />
           <div>
             <span>识别结果</span>
-            <strong>{result.label ?? result.rawLabel ?? "检测中"}</strong>
+            <strong>{gestureName(result.label ?? result.rawLabel)}</strong>
           </div>
         </div>
         <div className="confidence">
@@ -147,13 +148,13 @@ export function RecognizeView() {
           <MetricCard label="FPS" value={fps} tone="green" />
           <MetricCard label="延迟" value={`${latency}ms`} tone="amber" />
           <MetricCard label="摄像头" value={cameraStatus} />
-          <MetricCard label="模式" value={mode} />
+          <MetricCard label="模式" value={modeName(mode)} />
         </div>
         <div className="sampleButtons">
           {["palm", "fist", "peace", "point", "thumbs_up"].map((item) => (
             <button key={item} onClick={() => sendDemo(item)}>
               <Camera size={16} />
-              {item}
+              {gestureName(item)}
             </button>
           ))}
         </div>

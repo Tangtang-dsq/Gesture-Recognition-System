@@ -2,6 +2,7 @@ import { Database, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 import { MetricCard } from "../components/MetricCard.jsx";
 import { createDemoFeature } from "../lib/features.js";
+import { gestureName } from "../lib/gestureLabels.js";
 import { getJson, postJson } from "../lib/api.js";
 
 export function CollectView() {
@@ -55,7 +56,7 @@ export function CollectView() {
           <select value={label} onChange={(event) => setLabel(event.target.value)}>
             {(labels[mode] ?? []).map((item) => (
               <option key={item} value={item}>
-                {item}
+                {gestureName(item)}
               </option>
             ))}
           </select>
@@ -67,7 +68,7 @@ export function CollectView() {
       </div>
       <div className="metricsGrid wide">
         {Object.entries(counts[mode] ?? {}).map(([key, value]) => (
-          <MetricCard key={key} label={key} value={value} />
+          <MetricCard key={key} label={gestureName(key)} value={value} />
         ))}
       </div>
       {saved && <p className="notice">样本 #{saved} 已入库</p>}
