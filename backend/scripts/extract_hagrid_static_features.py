@@ -52,14 +52,40 @@ def normalize_landmark_list(landmarks) -> list[float]:
     return out
 
 
-def load_image_names(annotation_path: Path) -> list[str]:
+def load_image_items(annotation_path: Path, source_label: str) -> list[tuple[str, list[float] | None]]:
     with annotation_path.open("r", encoding="utf-8") as f:
         data = json.load(f)
     if isinstance(data, dict):
-        return list(data.keys())
+        items: list[tuple[str, list[float] | None]] = []
+        for image_name, meta in data.items():
+            labels = meta.get("labels", [])
+            bboxes = meta.get("bboxes", [])
+            bbox = None
+            if source_label in labels:
+                idx = labels.index(source_label)
+                if idx < len(bboxes):
+                    bbox = bboxes[idx]
+            items.append((image_name, bbox))
+        return items
     if isinstance(data, list):
-        return [item["image_id"] for item in data if "image_id" in item]
+        return [(item["image_id"], item.get("bbox")) for item in data if "image_id" in item]
     raise ValueError(f"Unsupported annotation format: {annotation_path}")
+
+
+def crop_bbox(image, bbox: list[float] | None, padding: float):
+    if not bbox:
+        return image
+    height, width = image.shape[:2]
+    x, y, w, h = bbox
+    pad_x = w * padding
+    pad_y = h * padding
+    left = max(0, int((x - pad_x) * width))
+    top = max(0, int((y - pad_y) * height))
+    right = min(width, int((x + w + pad_x) * width))
+    bottom = min(height, int((y + h + pad_y) * height))
+    if right <= left or bottom <= top:
+        return image
+    return image[top:bottom, left:right]
 
 
 def main() -> None:
@@ -67,6 +93,7 @@ def main() -> None:
     parser.add_argument("--dataset-root", type=Path, default=settings.dataset_root)
     parser.add_argument("--max-per-class", type=int, default=800)
     parser.add_argument("--classes", nargs="*", default=None, help="Optional source class names to process.")
+    parser.add_argument("--bbox-padding", type=float, default=1.0)
     parser.add_argument(
         "--model",
         type=Path,
@@ -117,12 +144,12 @@ def main() -> None:
                     print(f"skip missing class: {source_label}")
                     continue
 
-                image_names = load_image_names(annotation_path)
-                random.shuffle(image_names)
-                image_names = image_names[: args.max_per_class]
+                image_items = load_image_items(annotation_path, source_label)
+                random.shuffle(image_items)
+                image_items = image_items[: args.max_per_class]
                 class_written = 0
 
-                for image_name in image_names:
+                for image_name, bbox in image_items:
                     image_path = class_dir / image_name
                     if not image_path.suffix:
                         image_path = image_path.with_suffix(".jpg")
@@ -131,6 +158,7 @@ def main() -> None:
                         failed += 1
                         continue
 
+                    image = crop_bbox(image, bbox, args.bbox_padding)
                     rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                     mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
                     result = landmarker.detect(mp_image)
@@ -143,7 +171,7 @@ def main() -> None:
                     written += 1
                     class_written += 1
 
-                print(f"{source_label} -> {target_label}: {class_written}/{len(image_names)}")
+                print(f"{source_label} -> {target_label}: {class_written}/{len(image_items)}")
 
     print(f"saved: {out_path}")
     print(f"written: {written}, failed: {failed}")
