@@ -3,7 +3,7 @@
 ## 推荐方式：SMB 共享挂载到 Windows
 
 1. 在群晖 DSM 中打开 `控制面板 -> 文件服务 -> SMB`，启用 SMB。
-2. 新建共享文件夹，例如 `gesture-data`。
+2. 新建或确认共享文件夹，例如你当前提供的共享应类似 `aisd`。
 3. 给当前训练账号授予读写权限。
 4. Windows 本机把共享目录映射为盘符：
 
@@ -40,6 +40,44 @@ UNC 路径也可以：
 
 ```env
 DATASET_ROOT=//NAS_IP/gesture-data
+```
+
+## 当前 NAS 示例
+
+你提供的 DSM 管理地址是：
+
+```text
+http://192.168.100.235:5000/
+```
+
+你提供的 NAS 内部目录是：
+
+```text
+/aisd/zhangxu/shoushi_data
+```
+
+在 Windows 上，训练脚本不能直接用 DSM 网页地址访问文件，需要通过 SMB 共享访问。若 `aisd` 是群晖共享文件夹名称，则对应路径是：
+
+```text
+\\192.168.100.235\aisd\zhangxu\shoushi_data
+```
+
+如果不映射盘符，项目 `.env` 可以写成：
+
+```env
+DATASET_ROOT=//192.168.100.235/aisd/zhangxu/shoushi_data
+```
+
+更推荐先映射为 `Z:` 盘：
+
+```powershell
+net use Z: "\\192.168.100.235\aisd" /user:NAS用户名 * /persistent:yes
+```
+
+映射成功后 `.env` 写：
+
+```env
+DATASET_ROOT=Z:/zhangxu/shoushi_data
 ```
 
 ## NAS 上的数据目录结构

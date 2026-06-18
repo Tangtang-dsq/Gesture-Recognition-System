@@ -59,5 +59,13 @@ python backend/scripts/download_public_datasets.py --dataset all --dry-run
 群晖 NAS 挂载和训练目录配置见 `docs/NAS数据挂载与训练.md`。核心配置是 `.env` 中的 `DATASET_ROOT`，例如：
 
 ```env
-DATASET_ROOT=Z:/gesture-data
+DATASET_ROOT=//192.168.100.235/aisd/zhangxu/shoushi_data
+```
+
+检查路径是否可访问：
+
+```powershell
+cd backend
+$env:PYTHONPATH="."
+python scripts/check_dataset_root.py
 ```
