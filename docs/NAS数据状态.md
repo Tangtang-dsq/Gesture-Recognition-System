@@ -14,13 +14,13 @@
 
 | 特征文件 | 数据来源 | 状态 |
 | --- | --- | --- |
-| `features/static/gesture_data.csv` | HaGRID 已解压类别抽样：`fist`、`like`、`ok`、`one`、`four` | 已生成 1200 条有效样本 |
+| `features/static/gesture_data.csv` | HaGRID 已解压类别抽样：`fist`、`like`、`ok`、`one`、`four` | 已生成 1977 条有效样本 |
 
 ## 已训练模型
 
 | 模型 | 类别 | 测试准确率 | 状态 |
 | --- | --- | --- | --- |
-| `backend/app/models/static_classifier.joblib` | `fist`、`thumbs_up`、`ok`、`number_1`、`number_4` | 0.9167 | 第一版可用模型 |
+| `backend/app/models/static_classifier.joblib` | `fist`、`thumbs_up`、`ok`、`number_1`、`number_4` | 0.9232 | 第二版可用模型 |
 
 ## 下一步
 
