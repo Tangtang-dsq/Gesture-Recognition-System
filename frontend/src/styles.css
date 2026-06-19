@@ -278,6 +278,34 @@ nav button.active,
   gap: 8px;
 }
 
+.gestureList {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e5eae4;
+}
+
+.gestureList > span {
+  display: block;
+  margin-bottom: 10px;
+  color: #69746f;
+  font-size: 13px;
+}
+
+.gestureList > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gestureList b {
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: #eef3ef;
+  color: #283430;
+  font-size: 13px;
+  line-height: 1;
+}
+
 .status {
   height: 26px;
   display: inline-flex;

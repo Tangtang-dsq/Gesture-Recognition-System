@@ -2,7 +2,7 @@ import { Database, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 import { MetricCard } from "../components/MetricCard.jsx";
 import { createDemoFeature } from "../lib/features.js";
-import { gestureName } from "../lib/gestureLabels.js";
+import { gestureName, modeName } from "../lib/gestureLabels.js";
 import { getJson, postJson } from "../lib/api.js";
 
 export function CollectView() {
@@ -47,8 +47,8 @@ export function CollectView() {
         <label>
           模式
           <select value={mode} onChange={(event) => setMode(event.target.value)}>
-            <option value="static">static</option>
-            <option value="dynamic">dynamic</option>
+            <option value="static">{modeName("static")}</option>
+            <option value="dynamic">{modeName("dynamic")}</option>
           </select>
         </label>
         <label>

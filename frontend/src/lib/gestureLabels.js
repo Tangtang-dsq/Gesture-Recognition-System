@@ -25,6 +25,18 @@ export const MODE_LABELS = {
   dynamic: "动态",
 };
 
+export const TRAINED_STATIC_GESTURES = [
+  "fist",
+  "palm",
+  "peace",
+  "thumbs_up",
+  "ok",
+  "number_1",
+  "number_2",
+  "number_3",
+  "number_4",
+];
+
 export function gestureName(label) {
   if (!label) return "检测中";
   return GESTURE_LABELS[label] ?? label;
