@@ -80,7 +80,6 @@ nav {
 
 nav button,
 .toolbarRow button,
-.sampleButtons button,
 .segmented button {
   min-height: 40px;
   display: inline-flex;
@@ -269,13 +268,6 @@ nav button.active,
 
 .metric-red strong {
   color: #b24735;
-}
-
-.sampleButtons {
-  margin-top: 16px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
 }
 
 .gestureList {

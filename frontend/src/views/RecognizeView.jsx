@@ -1,8 +1,8 @@
-import { Camera, Hand, Pause, Play, Send } from "lucide-react";
+import { Hand, Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { MetricCard } from "../components/MetricCard.jsx";
 import { StatusPill } from "../components/StatusPill.jsx";
-import { createDemoFeature, normalizeLandmarks } from "../lib/features.js";
+import { normalizeLandmarks } from "../lib/features.js";
 import { TRAINED_STATIC_GESTURES, gestureName, modeName } from "../lib/gestureLabels.js";
 import { createHandLandmarker } from "../lib/handLandmarker.js";
 import { createGestureSocket } from "../lib/socket.js";
@@ -97,10 +97,6 @@ export function RecognizeView() {
     rafRef.current = requestAnimationFrame(loop);
   }
 
-  function sendDemo(kind) {
-    socketRef.current?.send({ type: "frame", mode: "static", feature: createDemoFeature(kind), ts: Date.now() });
-  }
-
   return (
     <section className="workspace">
       <div className="stage">
@@ -125,9 +121,6 @@ export function RecognizeView() {
               动态
             </button>
           </div>
-          <button className="iconButton" title="发送掌形样本" onClick={() => sendDemo("palm")}>
-            <Send size={18} />
-          </button>
         </div>
       </div>
 
@@ -157,14 +150,6 @@ export function RecognizeView() {
               <b key={item}>{gestureName(item)}</b>
             ))}
           </div>
-        </div>
-        <div className="sampleButtons">
-          {["palm", "fist", "peace", "thumbs_up", "ok"].map((item) => (
-            <button key={item} onClick={() => sendDemo(item)}>
-              <Camera size={16} />
-              {gestureName(item)}
-            </button>
-          ))}
         </div>
       </aside>
     </section>
