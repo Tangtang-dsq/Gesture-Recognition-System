@@ -218,6 +218,14 @@ nav button.active,
   line-height: 1;
 }
 
+.resultBlock em {
+  display: block;
+  margin-top: 8px;
+  color: #69746f;
+  font-size: 13px;
+  font-style: normal;
+}
+
 .confidence {
   padding: 18px 0;
   display: grid;

@@ -130,6 +130,9 @@ export function RecognizeView() {
           <div>
             <span>识别结果</span>
             <strong>{gestureName(result.label ?? result.rawLabel)}</strong>
+            {result.rawLabel && result.label !== result.rawLabel && (
+              <em>候选：{gestureName(result.rawLabel)}</em>
+            )}
           </div>
         </div>
         <div className="confidence">

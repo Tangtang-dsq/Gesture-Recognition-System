@@ -3,7 +3,7 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from app.core.config import settings
 from app.core.dynamic_classifier import DynamicClassifier, SessionContext
 from app.core.features import validate_feature
-from app.core.postprocess import Stabilizer
+from app.core.postprocess import Stabilizer, StaticStabilizer
 from app.core.static_classifier import StaticClassifier
 
 router = APIRouter()
@@ -15,7 +15,12 @@ dynamic_classifier = DynamicClassifier.load()
 async def recognize(ws: WebSocket) -> None:
     await ws.accept()
     ctx = SessionContext(seq_len=settings.seq_len)
-    stabilizer = Stabilizer(
+    static_stabilizer = StaticStabilizer(
+        threshold=settings.conf_threshold,
+        vote_n=3,
+        vote_min=2,
+    )
+    dynamic_stabilizer = Stabilizer(
         threshold=settings.conf_threshold,
         vote_n=settings.vote_n,
         vote_min=settings.vote_min,
@@ -41,10 +46,11 @@ async def recognize(ws: WebSocket) -> None:
             if msg.get("mode") == "dynamic":
                 predicted = dynamic_classifier.update(ctx, feature)
                 label, confidence = predicted if predicted else (None, 0.0)
+                stable = dynamic_stabilizer.stabilize(label, confidence)
             else:
                 label, confidence = static_classifier.predict(feature)
+                stable = static_stabilizer.stabilize(label, confidence)
 
-            stable = stabilizer.stabilize(label, confidence)
             await ws.send_json(
                 {
                     "type": "result",
