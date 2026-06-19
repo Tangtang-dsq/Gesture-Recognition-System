@@ -28,7 +28,6 @@ export const MODE_LABELS = {
 export const TRAINED_STATIC_GESTURES = [
   "fist",
   "palm",
-  "peace",
   "thumbs_up",
   "ok",
   "number_1",

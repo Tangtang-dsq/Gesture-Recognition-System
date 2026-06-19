@@ -20,7 +20,7 @@
 
 | 模型 | 类别 | 测试准确率 | 状态 |
 | --- | --- | --- | --- |
-| `backend/app/models/static_classifier.joblib` | `fist`、`thumbs_up`、`ok`、`number_1`、`number_2`、`number_3`、`number_4`、`palm`、`peace` | 0.9734 | 当前静态模型 |
+| `backend/app/models/static_classifier.joblib` | `fist`、`thumbs_up`、`ok`、`number_1`、`number_2`、`number_3`、`number_4`、`palm` | 0.9716 | 当前静态模型，已移除易混淆的 `peace` |
 
 ## 下一步
 
